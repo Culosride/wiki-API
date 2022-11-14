@@ -85,7 +85,7 @@ async function main() {
 
       .delete(async (req, res) => {
         const id = req.params.id
-        await Article.findOneAndDelete({_id: id})
+        await Article.deleteOne({_id: id})
         res.redirect("/articles")
       })
   }
