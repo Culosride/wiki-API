@@ -31,31 +31,27 @@ async function main() {
     res.redirect("/articles")
   })
 
-  app.get("/articles", async (req, res) => {
-    const articles = await Article.find()
-    res.send(articles)
-  })
-
-  app.get("/articles/new", async (req, res) => {
-    res.render("newArticle")
-  })
-
-  app.post("/articles", async (req,res) => {
-    const title = req.body.title
-    const content = req.body.content
-    const newArticle = new Article({
-      title: title,
-      content: content
+  app.route("/articles")
+    .get(async (req, res) => {
+      const articles = await Article.find()
+      res.send(articles)
     })
-    await newArticle.save()
-    res.redirect("/articles")
-  })
 
-  app.delete("/articles", async (req, res) => {
-    await Article.deleteMany()
-    res.redirect("/articles")
-  })
+    .post(async (req,res) => {
+      const title = req.body.title
+      const content = req.body.content
+      const newArticle = new Article({
+        title: title,
+        content: content
+      })
+      await newArticle.save()
+      res.redirect("/articles")
+    })
 
+    .delete(async (req, res) => {
+      await Article.deleteMany()
+      res.redirect("/articles")
+    })
 }
 
 app.listen(3000)
