@@ -15,9 +15,9 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({extended: true}));
 
-Main().catch(err => console.log(err))
+main().catch(err => console.log(err))
 
-async function Main() {
+async function main() {
   await mongoose.connect('mongodb://localhost:27017/wikiDB')
 
   const articleSchema = new mongoose.Schema({
@@ -27,4 +27,11 @@ async function Main() {
 
   const Article = mongoose.model("Article", articleSchema)
 
+  app.get("/", async (req, res) => {
+    const articles = await Article.find()
+    res.render("home", {articles: articles})
+  })
+
 }
+
+app.listen(3000)
