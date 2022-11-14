@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 // import and use the dirname() method from the path module.
 // The dirname method takes a path as a parameter and returns the directory name of the path.
 import path from "path";
+import { title } from "process";
 // fileURLToPath method from the url module to get the filename.
 import {fileURLToPath} from 'url';
 const __filename = fileURLToPath(import.meta.url);
@@ -55,11 +56,30 @@ async function main() {
     });
 
   app.route("/articles/:id")
+
     .get(async (req, res) => {
-      const id = req.params.id
-      const article = await Article.find({_id: id})
-      res.send(article)
-    })
+        const id = req.params.id
+        const article = await Article.find({_id: id})
+        res.send(article)
+      })
+
+      .put(async (req, res) => {
+        await Article.replaceOne(
+          { _id: req.params.id },
+          { title: req.body.title, content: req.body.content },
+          )
+        const article = await Article.findOne({ _id: req.params.id })
+        res.send(article)
+      })
+
+      .patch(async (req, res) => {
+        await Article.updateOne(
+          { _id: req.params.id },
+          { title: req.body.title, content: req.body.content },
+          )
+        const article = await Article.findOne({ _id: req.params.id })
+        res.send(article)
+      })
   }
 
   app.listen(3000)
