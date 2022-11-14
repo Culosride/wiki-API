@@ -64,18 +64,20 @@ async function main() {
       })
 
       .put(async (req, res) => {
+        const {title, content} = req.body
         await Article.replaceOne(
           { _id: req.params.id },
-          { title: req.body.title, content: req.body.content },
+          { title, content },
           )
         const article = await Article.findOne({ _id: req.params.id })
         res.send(article)
       })
 
       .patch(async (req, res) => {
+        const {title, content} = req.body
         await Article.updateOne(
           { _id: req.params.id },
-          { title: req.body.title, content: req.body.content },
+          { title, content },
           )
         const article = await Article.findOne({ _id: req.params.id })
         res.send(article)
