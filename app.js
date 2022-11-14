@@ -32,6 +32,22 @@ async function main() {
     res.render("home", {articles: articles})
   })
 
+  app.get("/new-article", async (req, res) => {
+    res.render("newArticle")
+  })
+
+  app.post("/postArticle", async (req,res) => {
+    const title = req.body.title
+    const content = req.body.content
+    const newArticle = new Article({
+      title: title,
+      content: content
+    })
+
+    await newArticle.save()
+    res.redirect("/")
+  })
+
 }
 
 app.listen(3000)
