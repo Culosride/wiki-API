@@ -31,14 +31,15 @@ async function main() {
     res.redirect("/articles")
   })
 
-  app.route("/articles")
-    .get(async (req, res) => {
-      const articles = await Article.find()
-      res.send(articles)
-    })
 
-    .post(async (req,res) => {
-      const title = req.body.title
+  app.route("/articles")
+  .get(async (req, res) => {
+    const articles = await Article.find()
+    res.send(articles)
+  })
+
+  .post(async (req,res) => {
+    const title = req.body.title
       const content = req.body.content
       const newArticle = new Article({
         title: title,
@@ -51,7 +52,14 @@ async function main() {
     .delete(async (req, res) => {
       await Article.deleteMany()
       res.redirect("/articles")
-    })
-}
+    });
 
-app.listen(3000)
+  app.route("/articles/:id")
+    .get(async (req, res) => {
+      const id = req.params.id
+      const article = await Article.find({_id: id})
+      res.send(article)
+    })
+  }
+
+  app.listen(3000)
