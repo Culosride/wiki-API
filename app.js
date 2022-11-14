@@ -82,6 +82,12 @@ async function main() {
         const article = await Article.findOne({ _id: req.params.id })
         res.send(article)
       })
+
+      .delete(async (req, res) => {
+        const id = req.params.id
+        await Article.findOneAndDelete({_id: id})
+        res.redirect("/articles")
+      })
   }
 
   app.listen(3000)
