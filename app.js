@@ -28,24 +28,32 @@ async function main() {
   const Article = mongoose.model("Article", articleSchema)
 
   app.get("/", async (req, res) => {
-    const articles = await Article.find()
-    res.render("home", {articles: articles})
+    res.redirect("/articles")
   })
 
-  app.get("/new-article", async (req, res) => {
+  app.get("/articles", async (req, res) => {
+    const articles = await Article.find()
+    res.send(articles)
+  })
+
+  app.get("/articles/new", async (req, res) => {
     res.render("newArticle")
   })
 
-  app.post("/postArticle", async (req,res) => {
+  app.post("/articles", async (req,res) => {
     const title = req.body.title
     const content = req.body.content
     const newArticle = new Article({
       title: title,
       content: content
     })
-
     await newArticle.save()
-    res.redirect("/")
+    res.redirect("/articles")
+  })
+
+  app.delete("/articles", async (req, res) => {
+    await Article.deleteMany()
+    res.redirect("/articles")
   })
 
 }
